@@ -6,8 +6,8 @@ require (
 	github.com/apache/thrift v0.13.0
 	github.com/cloudwego/hertz v0.6.1
 	github.com/cloudwego/kitex v0.5.2
+	github.com/golang/protobuf v1.5.2
 	github.com/kitex-contrib/registry-etcd v0.1.0
-	google.golang.org/protobuf v1.28.1
 )
 
 require (
@@ -25,7 +25,6 @@ require (
 	github.com/coreos/go-systemd/v22 v22.3.2 // indirect
 	github.com/fsnotify/fsnotify v1.5.4 // indirect
 	github.com/gogo/protobuf v1.3.2 // indirect
-	github.com/golang/protobuf v1.5.2 // indirect
 	github.com/google/pprof v0.0.0-20220608213341-c488b8fa1db3 // indirect
 	github.com/henrylee2cn/ameda v1.4.10 // indirect
 	github.com/henrylee2cn/goutil v0.0.0-20210127050712-89660552f6f8 // indirect
@@ -56,6 +55,7 @@ require (
 	golang.org/x/time v0.0.0-20220411224347-583f2d630306 // indirect
 	google.golang.org/genproto v0.0.0-20210602131652-f16073e35f0c // indirect
 	google.golang.org/grpc v1.41.0 // indirect
+	google.golang.org/protobuf v1.28.1 // indirect
 	gopkg.in/yaml.v3 v3.0.1 // indirect
 )
 
