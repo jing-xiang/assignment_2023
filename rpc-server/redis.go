@@ -13,10 +13,10 @@ type RedisClient struct {
 func (c *RedisClient) InitClient(ctx context.Context, address, password string) error {
 	r := redis.NewClient(&redis.Options{
 		Addr:     address,
-		Password: password,
-		DB:       0,
+		Password: password, //no password
+		DB:       0,        //default db
 	})
-
+	//test connection
 	if err := r.Ping(ctx).Err(); err != nil {
 		return err
 	}
@@ -25,22 +25,7 @@ func (c *RedisClient) InitClient(ctx context.Context, address, password string) 
 	return nil
 }
 
-func (c *RedisClient) SaveMessage(ctx context.Context, roomID string, message *Message) error {
-	text, err := json.Marshal(message)
-	if err != nil {
-		return err
-	}
-
-	member := &redis.Z{
-		Score:  float64(message.Timestamp),
-		Member: text,
-	}
-
-	_, err = c.cli.ZAdd(ctx, roomID, *member).Result()
-	return err
-}
-
-func (c *RedisClient) GetMessagesByRoomID(ctx context.Context, roomID string, start, end int64, reverse bool) ([]*Message, error) {
+func (c *RedisClient) GetMsgByID(ctx context.Context, roomID string, start, end int64, reverse bool) ([]*Message, error) {
 	var (
 		rawMessages []string
 		messages    []*Message
@@ -48,8 +33,10 @@ func (c *RedisClient) GetMessagesByRoomID(ctx context.Context, roomID string, st
 	)
 
 	if reverse {
+		//descending order
 		rawMessages, err = c.cli.ZRevRange(ctx, roomID, start, end).Result()
 	} else {
+		//ascending order
 		rawMessages, err = c.cli.ZRange(ctx, roomID, start, end).Result()
 	}
 
@@ -67,4 +54,19 @@ func (c *RedisClient) GetMessagesByRoomID(ctx context.Context, roomID string, st
 	}
 
 	return messages, nil
+}
+
+func (c *RedisClient) SaveMsg(ctx context.Context, roomID string, message *Message) error {
+	text, err := json.Marshal(message)
+	if err != nil {
+		return err
+	}
+
+	member := &redis.Z{
+		Score:  float64(message.Timestamp),
+		Member: text,
+	}
+
+	_, err = c.cli.ZAdd(ctx, roomID, *member).Result()
+	return err
 }
